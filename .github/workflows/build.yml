@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Get project files
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Java 21
@@ -21,17 +21,18 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Build mod
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.14.3"
 
-            - name: Compile mod
+      - name: Build mod
         working-directory: fartiqs-auction-mod
         run: gradle build
 
-      - name: Upload JAR
+      - name: Upload built JAR
         uses: actions/upload-artifact@v4
         with:
           name: auction-mod-jar
-          path: build/libs/*.jar
+          path: fartiqs-auction-mod/build/libs/*.jar
+          if-no-files-found: error
